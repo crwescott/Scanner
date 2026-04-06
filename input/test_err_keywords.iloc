@@ -1,0 +1,4 @@
+// Testing partial and misspelled keywords
+loa r1 => r2
+loadII 10 => r1
+nopop

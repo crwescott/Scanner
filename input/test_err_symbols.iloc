@@ -1,0 +1,4 @@
+// Testing illegal symbols
+loadI 100 @ r1
+add r1, r2 = r3
+$500

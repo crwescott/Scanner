@@ -1,0 +1,19 @@
+// 1. Basic Memory Operations
+loadI 1024 => r1
+load  r1   => r2
+store r2   => r1
+
+// 2. Arithmetic Operations
+add    r1, r2 => r3
+sub    r3, r1 => r4
+mult   r4, r2 => r5
+lshift r5, r1 => r6
+rshift r6, r2 => r7
+
+// 3. Output and NOP
+output 1024
+nop
+
+// 4. Edge Cases: Spacing, tabs, and leading zeros
+loadI	007	=>	r001
+add r0,r1=>r2
