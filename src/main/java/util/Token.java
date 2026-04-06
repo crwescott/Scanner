@@ -6,8 +6,10 @@ public class Token {
     public int lexeme;
     public Position pos;
 
-    public Token() {
-        pos = new Position();
+    public Token(int line, int col) {
+        this.category = CAT_CODE.ERROR;
+        this.opCode = OP_CODE.NONE;
+        this.pos = new Position(line, col);
     }
 
     public enum CAT_CODE {

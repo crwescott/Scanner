@@ -52,7 +52,7 @@ public class Scanner {
         FINAL_STATES[registerState] = new TokenInfo(CAT_CODE.REGISTER, OP_CODE.NONE);
 
         for (char c = '0'; c <= '9'; c++) {
-            TABLE[afterRState][c] = registerState;   // After-R -> digit -> REGISTER
+            TABLE[afterRState][c] = registerState;
             TABLE[registerState][c] = registerState;
         }
     }
@@ -62,8 +62,8 @@ public class Scanner {
         FINAL_STATES[constantState] = new TokenInfo(CAT_CODE.CONSTANT, OP_CODE.NONE);
 
         for (char c = '0'; c <= '9'; c++) {
-            TABLE[0][c] = constantState;             // START -> digit -> CONSTANT
-            TABLE[constantState][c] = constantState; // CONSTANT -> digit -> CONSTANT (The Loop)
+            TABLE[0][c] = constantState;
+            TABLE[constantState][c] = constantState;
         }
     }
 
@@ -151,11 +151,7 @@ public class Scanner {
         int c = nextChar();
         c = removeFiller(c);
 
-        Token token = new Token();
-        token.category = CAT_CODE.ERROR;
-        token.opCode = OP_CODE.NONE;
-        token.pos.line = line;
-        token.pos.column = column;
+        Token token = new Token(line, column);
 
         if (c == -1) {
             token.category = CAT_CODE.EOF;
@@ -166,7 +162,7 @@ public class Scanner {
             token.category = CAT_CODE.EOL;
 
             if (c == '\r' && peekChar() == '\n') {
-                nextChar(); // Consume the '\n' so it doesn't trigger again
+                nextChar();
             }
 
             line++;
