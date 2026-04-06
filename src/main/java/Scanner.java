@@ -13,6 +13,8 @@ public class Scanner {
     private int line = 1;
     private int column = 1;
 
+    private int prevLine = 1;
+
     public Scanner(String sourceFilename) throws IOException {
         filename = "input/" + sourceFilename;
         reader = new PushbackReader(new FileReader(filename));
@@ -104,36 +106,35 @@ public class Scanner {
     }
 
     private int nextChar() throws IOException {
-        int character = reader.read();
-        if (character != -1) {
-            column++;
-        }
-        return character;
+        return reader.read();
     }
 
-    private void pushChar(int argChar) throws IOException {
-        if (argChar != -1) {
-            column--; // Move the cursor back
-        }
-        reader.unread(argChar);
+    private void pushChar(int c) throws IOException {
+        if (c != -1) reader.unread(c);
     }
 
     public int peekChar() throws IOException {
-        int peeker = nextChar();
-        pushChar(peeker);
-        return peeker;
+        int c = reader.read();
+        if (c != -1) reader.unread(c);
+        return c;
     }
 
     private int removeFiller(int c) throws IOException {
         while (c != -1) {
             if (Character.isWhitespace((char) c) && c != '\n' && c != '\r') {
+                column++;
                 c = nextChar();
             } else if (c == '/') {
                 if (peekChar() == '/') {
+                    column += 2;
                     c = nextChar();
-                    while (c != -1 && c != '\n') {
+                    c = nextChar();
+
+                    while (c != -1 && c != '\n' && c != '\r') {
+                        column++;
                         c = nextChar();
                     }
+
                 } else {
                     break;
                 }
@@ -156,7 +157,7 @@ public class Scanner {
         token.category = CAT_CODE.ERROR;
         token.opCode = OP_CODE.NONE;
         token.pos.line = line;
-        token.pos.column = column - 1;
+        token.pos.column = column;
 
         if (c == -1) {
             token.category = CAT_CODE.EOF;
@@ -180,13 +181,18 @@ public class Scanner {
             int nextState = TABLE[currentState][c];
 
             if (nextState == ERROR_STATE) {
-                if (lexeme.isEmpty()) { lexeme.append((char) c); }
-                else { pushChar(c); }
+                if (lexeme.isEmpty()) {
+                    lexeme.append((char) c);
+                    column++;
+                } else {
+                    pushChar(c);
+                }
                 break;
             }
 
             currentState = nextState;
             lexeme.append((char)c);
+            column++;
 
             c = nextChar();
         }

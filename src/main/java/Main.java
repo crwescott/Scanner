@@ -5,17 +5,15 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
 
-        // 1. Define your suite of test files
         String[] testFiles = {
                 "test_err_keywords.iloc",
                 "test_err_registers.iloc",
                 "test_err_symbols.iloc",
-                "test.iloc" // Keep your master test file at the end as a control!
+                "test.iloc"
         };
 
-        System.out.println("Starting Automated Scanner Test Suite...\n");
+        System.out.println("=== Starting Testing ===\n");
 
-        // 2. Loop through every file in the array
         for (String filename : testFiles) {
             runTestOnFile(filename);
         }
@@ -30,11 +28,9 @@ public class Main {
         System.out.println("==========================================");
 
         try {
-            // Your Scanner constructor likely handles appending "input/"
             Scanner scanner = new Scanner(filename);
             Token currentToken;
 
-            // The Extraction Loop
             do {
                 currentToken = scanner.scan();
                 printToken(currentToken);
@@ -43,15 +39,12 @@ public class Main {
             scanner.closeScanner();
 
         } catch (IOException e) {
-            // If the file is missing or locked, it prints the error but DOES NOT crash the whole suite
-            System.err.println("  [!] Fatal Error reading " + filename + ": " + e.getMessage());
+            System.err.println(" Error reading " + filename + ": " + e.getMessage());
         }
-        System.out.println(); // Blank line for readability between files
+        System.out.println();
     }
 
-    // Your existing print helper method
     private static void printToken(Token t) {
-        // Highlighting ERROR tokens with an indicator to make them pop out in the console
         String prefix = (t.category == CAT_CODE.ERROR) ? ">>> " : "    ";
 
         System.out.printf("%sLine: %-3d Col: %-3d | Category: %-10s",
