@@ -13,8 +13,6 @@ public class Scanner {
     private int line = 1;
     private int column = 1;
 
-    private int prevLine = 1;
-
     public Scanner(String sourceFilename) throws IOException {
         filename = "input/" + sourceFilename;
         reader = new PushbackReader(new FileReader(filename));
