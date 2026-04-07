@@ -19,7 +19,7 @@ public class Scanner {
 
     }
 
-    private static final int MAX_STATES = 100; // Plenty of room for Lab 1
+    private static final int MAX_STATES = 100;
     private static final int MAX_LEXEME_LENGTH = 4096;
     private static final int ERROR_STATE = -1;
 
