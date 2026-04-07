@@ -202,7 +202,7 @@ public class Scanner {
             if (token.category == CAT_CODE.CONSTANT) {
                 token.lexeme = Integer.parseInt(text);
             } else if (token.category == CAT_CODE.REGISTER) {
-                token.lexeme = Integer.parseInt(text.substring(1)); // Skip the 'r'
+                token.lexeme = Integer.parseInt(text.substring(1)); // Skip 'r'
             }
         }
 
